@@ -212,7 +212,13 @@ export class Orchestrator {
       )
       effectiveLimit = limit
 
-      if (questionIds && questionIds.length > 0) {
+      // Smoke-test escape hatch: narrow the run to a handful of question ids
+      // without touching the CLI. No effect on a full-set run.
+      const envQids = process.env.ARICORD_BENCH_QIDS?.split(",").map((s) => s.trim()).filter(Boolean)
+      if (envQids && envQids.length > 0) {
+        logger.info(`ARICORD_BENCH_QIDS override: ${envQids.length} questions`)
+        targetQuestionIds = envQids
+      } else if (questionIds && questionIds.length > 0) {
         logger.info(`Using explicit questionIds: ${questionIds.length} questions`)
         targetQuestionIds = questionIds
       } else if (sampling) {
@@ -242,6 +248,7 @@ export class Orchestrator {
           question: q.question,
           groundTruth: q.groundTruth,
           questionType: q.questionType,
+          questionDate: q.metadata?.questionDate as string | undefined,
         })
       }
 

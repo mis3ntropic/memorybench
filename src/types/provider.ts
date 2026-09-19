@@ -77,7 +77,7 @@ export interface BuildAwareSessionBridge {
   deleteSessions(containerTag: string, sessionIds: string[]): Promise<void>
 }
 
-export type ProviderName = "supermemory" | "mem0" | "zep" | "filesystem" | "rag"
+export type ProviderName = "supermemory" | "mem0" | "zep" | "filesystem" | "rag" | "aricord"
 
 export type RemoteDocumentStatus = "absent" | "pending" | "ready" | "failed" | "unknown"
 
